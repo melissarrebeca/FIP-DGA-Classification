@@ -174,7 +174,7 @@ class GasPercentage:
     percentage: float
 
 
-def calculate_x_and_y_coords(gas: Gas, percentage: float) -> Coordinates:
+def calculate_polygon_vertices_coords(gas: Gas, percentage: float) -> Coordinates:
     cos = math.cos(math.radians(ANGLES_PER_GAS[gas]))
     sen = math.sin(math.radians(ANGLES_PER_GAS[gas]))
 
@@ -333,7 +333,7 @@ if __name__ == "__main__":
     gases_coords = []
 
     for gas_percentage in gases_percentages:
-        coords = calculate_x_and_y_coords(gas_percentage.gas, gas_percentage.percentage)
+        coords = calculate_polygon_vertices_coords(gas_percentage.gas, gas_percentage.percentage)
         gases_coords.append(coords)
 
     area = calcuate_polygon_area(gases_coords)
@@ -349,3 +349,7 @@ if __name__ == "__main__":
     print(centroid_positions_per_line)
 
     print(f"Pentagon region: {pentagon_region}")
+
+# Não está calculando corretamento, o que acredito que pode ser:
+    # 1 - A notação da somatória na hora de calculcar a area do poligno e as coordenadas da centroide ta um pouco confusa
+    # 2 - A ordem da delimitação dos pontos por linha do poligono
