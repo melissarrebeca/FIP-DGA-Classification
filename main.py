@@ -245,7 +245,7 @@ def calculate_all_centroid_positions_per_line(centroid_coords: Coordinates):
     return centroids_position_per_line
 
 
-def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: dict):
+def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: dict[PentagonLines, float]):
 
     if (centroid_coords.x >= -1 and centroid_coords.x <= 0) and (
         centroid_coords.y >= 24.5 and centroid_coords.y <= 33
