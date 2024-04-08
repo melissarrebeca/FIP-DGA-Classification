@@ -39,8 +39,6 @@ class PentagonRegions(Enum):
     T3 = "T3"
 
 
-ANGLE_PER_GASES = {Gas.C2H2: 18, Gas.H2: 90, Gas.C2H6: 162, Gas.CH4: 234, Gas.C2H4: 306}
-
 
 @dataclass
 class Coordinates:
@@ -171,60 +169,6 @@ ANGULAR_COEFICIENT_PER_LINE = {
 }
 
 
-@dataclass
-class GasPercentage:
-    gas: Gas
-    percentage: float
-
-
-def calculate_polygon_vertices_coords(gas: Gas, percentage: float) -> Coordinates:
-    cos = math.cos(math.radians(ANGLE_PER_GASES[gas]))
-    sen = math.sin(math.radians(ANGLE_PER_GASES[gas]))
-
-    x = percentage * cos
-    y = percentage * sen
-
-    return Coordinates(x, y)
-
-
-def calcuate_polygon_area(gases_coords: list[Coordinates]) -> float:
-    sum = 0
-
-    gases_coords.append(gases_coords[0])
-
-    for i in range(len(gases_coords) - 1):
-        current_coords = gases_coords[i]
-        next_coords = gases_coords[i + 1]
-
-        sum += current_coords.x * next_coords.y - next_coords.x * current_coords.y
-
-    return sum / 2
-
-
-def calculate_polygon_centroid_coords(
-    gases_coords: list[Coordinates], area: float
-) -> Coordinates:
-    x_sum = 0
-    y_sum = 0
-
-    gases_coords.append(gases_coords[0])
-
-    for i in range(len(gases_coords) - 1):
-        current_coords = gases_coords[i]
-        next_coords = gases_coords[i + 1]
-
-        x_sum += (current_coords.x + next_coords.x) * (
-            current_coords.x * next_coords.y - next_coords.x * current_coords.y
-        )
-
-        y_sum += (current_coords.y + next_coords.y) * (
-            current_coords.x * next_coords.y - next_coords.x * current_coords.y
-        )
-
-    x = x_sum / (6 * area)
-    y = y_sum / (6 * area)
-
-    return Coordinates(x, y)
 
 
 def calculate_centroid_position_based_on_line(
@@ -332,13 +276,6 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
 
 
 if __name__ == "__main__":
-    gases_percentages = [
-        GasPercentage(Gas.C2H2, 10),
-        GasPercentage(Gas.H2, 20),
-        GasPercentage(Gas.C2H6, 30),
-        GasPercentage(Gas.CH4, 40),
-        GasPercentage(Gas.C2H4, 50),
-    ]
 
     centroid_coords = Coordinates(-10, -25)
 
