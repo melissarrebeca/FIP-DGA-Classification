@@ -187,6 +187,8 @@ def calculate_polygon_vertices_coords(gas: Gas, percentage: float) -> Coordinate
 def calcuate_polygon_area(gases_coords: list[Coordinates]) -> float:
     sum = 0
 
+    gases_coords.append(gases_coords[0])
+
     for i in range(len(gases_coords) - 1):
         current_coords = gases_coords[i]
         next_coords = gases_coords[i + 1]
@@ -202,6 +204,8 @@ def calculate_polygon_centroid_coords(
     x_sum = 0
     y_sum = 0
 
+    gases_coords.append(gases_coords[0])
+
     for i in range(len(gases_coords) - 1):
         current_coords = gases_coords[i]
         next_coords = gases_coords[i + 1]
@@ -209,6 +213,7 @@ def calculate_polygon_centroid_coords(
         x_sum += (current_coords.x + next_coords.x) * (
             current_coords.x * next_coords.y - next_coords.x * current_coords.y
         )
+
         y_sum += (current_coords.y + next_coords.y) * (
             current_coords.x * next_coords.y - next_coords.x * current_coords.y
         )
@@ -230,17 +235,18 @@ def calculate_centroid_position_based_on_line(
 def calculate_all_centroid_positions_per_line(centroid_coords: Coordinates):
     centroids_position_per_line = {}
 
-    for pentagon_lines in PentagonLines:
+    for pentagon_line in PentagonLines:
         angular_coeficient = ANGULAR_COEFICIENT_PER_LINE[
-            PentagonLines[pentagon_lines.name]
+            PentagonLines[pentagon_line.name]
         ]
+
         position = calculate_centroid_position_based_on_line(
             angular_coeficient,
             centroid_coords,
-            COORDS_PER_LINES[PentagonLines[pentagon_lines.name]]["A"],
+            COORDS_PER_LINES[PentagonLines[pentagon_line.name]]["A"],
         )
 
-        centroids_position_per_line[PentagonLines[pentagon_lines.name]] = position
+        centroids_position_per_line[PentagonLines[pentagon_line.name]] = position
 
     return centroids_position_per_line
 
@@ -274,9 +280,9 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
         return PentagonRegions.T1
 
     elif (centroid_coords.x <= 0 and centroid_coords.y <= 3.1) and (
-        position_per_line[PentagonLines.P3] > 0
-        and position_per_line[PentagonLines.P4] < 0
-        and position_per_line[PentagonLines.P5] < 0
+        position_per_line[PentagonLines.P3] >= 0
+        and position_per_line[PentagonLines.P4] <= 0
+        and position_per_line[PentagonLines.P5] <= 0
         and position_per_line[PentagonLines.P6] < 0
     ):
         return PentagonRegions.T1
@@ -305,7 +311,7 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
     ):
         return PentagonRegions.D2
 
-    elif (centroid_coords.x > 0) and (
+    elif (centroid_coords.x >= 0) and (
         position_per_line[PentagonLines.P12] < 0
         and position_per_line[PentagonLines.P15] >= 0
     ):
@@ -330,14 +336,7 @@ if __name__ == "__main__":
         GasPercentage(Gas.C2H24, 50),
     ]
 
-    gases_coords = []
-
-    for gas_percentage in gases_percentages:
-        coords = calculate_polygon_vertices_coords(gas_percentage.gas, gas_percentage.percentage)
-        gases_coords.append(coords)
-
-    area = calcuate_polygon_area(gases_coords)
-    centroid_coords = calculate_polygon_centroid_coords(gases_coords, area)
+    centroid_coords = Coordinates(-10, -25)
 
     centroid_positions_per_line = calculate_all_centroid_positions_per_line(
         centroid_coords
@@ -345,11 +344,4 @@ if __name__ == "__main__":
 
     pentagon_region = calculate_pentagon_region(centroid_coords, centroid_positions_per_line)
 
-    print(centroid_coords)
-    print(centroid_positions_per_line)
-
-    print(f"Pentagon region: {pentagon_region}")
-
-# Não está calculando corretamento, o que acredito que pode ser:
-    # 1 - A notação da somatória na hora de calculcar a area do poligno e as coordenadas da centroide ta um pouco confusa
-    # 2 - A ordem da delimitação dos pontos por linha do poligono
+    print(pentagon_region)
