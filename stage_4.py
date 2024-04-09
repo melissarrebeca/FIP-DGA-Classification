@@ -9,7 +9,7 @@ class Gas(Enum):
     CH4 = "CH4"
     C2H4 = "C2H4"
 
-
+# definição das linhas do pentágono
 class PentagonLines(Enum):
     P1 = "P1"
     P2 = "P2"
@@ -27,7 +27,7 @@ class PentagonLines(Enum):
     P14 = "P14"
     P15 = "P15"
 
-
+# definição das regiões do pentágono
 class PentagonRegions(Enum):
     S = "S"
     PD = "PD"
@@ -44,11 +44,11 @@ class Coordinates:
     x: float
     y: float
 
-
+# cálculo de coeficiente linear
 def calculate_line_angular_coeficient(a: Coordinates, b: Coordinates) -> float:
     return (b.y - a.y) / (b.x - a.x)
 
-
+# definição dos pontos que determinam cada reta
 COORDS_PER_LINES = {
     PentagonLines.P1: {
         "A": Coordinates(-38, 12.4),
@@ -112,7 +112,7 @@ COORDS_PER_LINES = {
     },
 }
 
-
+# definição dos coeficientes por linha do polígono
 ANGULAR_COEFICIENT_PER_LINE = {
     PentagonLines.P1: calculate_line_angular_coeficient(
         COORDS_PER_LINES[PentagonLines.P1]["A"], COORDS_PER_LINES[PentagonLines.P1]["B"]
@@ -167,9 +167,7 @@ ANGULAR_COEFICIENT_PER_LINE = {
     ),
 }
 
-
-
-
+# cálculo da posição da centroide baseado na linha do polígono
 def calculate_centroid_position_based_on_line(
     angular_coeficient: float, centroid_coords: Coordinates, line_coords: Coordinates
 ):
@@ -177,26 +175,26 @@ def calculate_centroid_position_based_on_line(
         centroid_coords.y - line_coords.y
     )
 
-
+# cálculo de todas as posições relativas ao centroide
 def calculate_all_centroid_positions_per_line(centroid_coords: Coordinates):
     centroids_position_per_line = {}
 
-    for pentagon_line in PentagonLines:
-        angular_coeficient = ANGULAR_COEFICIENT_PER_LINE[
+    for pentagon_line in PentagonLines: # itera por todas as retas
+        angular_coeficient = ANGULAR_COEFICIENT_PER_LINE[ # resgata o coeficiente de reta
             PentagonLines[pentagon_line.name]
         ]
 
-        position = calculate_centroid_position_based_on_line(
+        position = calculate_centroid_position_based_on_line( # calcula a posição relativa a centroide
             angular_coeficient,
             centroid_coords,
             COORDS_PER_LINES[PentagonLines[pentagon_line.name]]["A"],
         )
 
-        centroids_position_per_line[PentagonLines[pentagon_line.name]] = position
+        centroids_position_per_line[PentagonLines[pentagon_line.name]] = position # adiciona a posição relativa no dicionário
 
     return centroids_position_per_line
 
-
+# define a região do poligono de falha baseado nas centroides e nas posições relativas da reta
 def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: dict[PentagonLines, float]):
 
     if (centroid_coords.x >= -1 and centroid_coords.x <= 0) and (

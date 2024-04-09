@@ -16,7 +16,7 @@ class Coordinates:
     x: float
     y: float
 
-
+# cálculo da área do poligono baseado nas cooordenadas de cada vértice
 def calcuate_polygon_area(gases_coords: list[Coordinates]) -> float:
     sum = 0
 
@@ -30,7 +30,7 @@ def calcuate_polygon_area(gases_coords: list[Coordinates]) -> float:
 
     return sum / 2
 
-
+# cálculo da centroide do poligonos
 def calculate_polygon_centroid_coords(
     gases_coords: list[Coordinates], area: float
 ) -> Coordinates:
