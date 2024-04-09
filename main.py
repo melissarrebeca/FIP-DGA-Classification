@@ -65,10 +65,10 @@ COORDS_PER_LINES = {
     },
     PentagonLines.P4: {
         "A": Coordinates(-35, 3.1),
-        "B": Coordinates(-23.5, 32.4),
+        "B": Coordinates(-23.5, -32.4),
     },
     PentagonLines.P5: {
-        "A": Coordinates(-23.5, 32.4),
+        "A": Coordinates(-23.5, -32.4),
         "B": Coordinates(23.5, -32.4),
     },
     PentagonLines.P6: {
@@ -336,7 +336,7 @@ if __name__ == "__main__":
         GasPercentage(Gas.C2H24, 50),
     ]
 
-    centroid_coords = Coordinates(-10, -25)
+    centroid_coords = Coordinates(-1, -1)
 
     centroid_positions_per_line = calculate_all_centroid_positions_per_line(
         centroid_coords

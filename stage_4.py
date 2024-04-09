@@ -65,10 +65,10 @@ COORDS_PER_LINES = {
     },
     PentagonLines.P4: {
         "A": Coordinates(-35, 3.1),
-        "B": Coordinates(-23.5, 32.4),
+        "B": Coordinates(-23.5, -32.4),
     },
     PentagonLines.P5: {
-        "A": Coordinates(-23.5, 32.4),
+        "A": Coordinates(-23.5, -32.4),
         "B": Coordinates(23.5, -32.4),
     },
     PentagonLines.P6: {
