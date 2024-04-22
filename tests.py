@@ -84,10 +84,10 @@ if __name__ == "__main__":
 
 
 
-        with open("wrong_results.csv", mode='w', newline='') as file:
+        with open("./results/wrong_results.csv", mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(wrong_results)
 
-        with open("right_results.csv", mode='w', newline='') as file:
+        with open("./results/right_results.csv", mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(right_results)
