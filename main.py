@@ -8,7 +8,7 @@ class Gas(Enum):
     H2 = "H2"
     C2H6 = "C2H6"
     CH4 = "CH4"
-    C2H24 = "C2H24"
+    C2H4 = "C2H4"
 
 
 class PentagonLines(Enum):
@@ -37,7 +37,7 @@ class PentagonRegions(Enum):
     T2 = "T2"
     T3 = "T3"
 
-ANGLES_PER_GAS = {Gas.C2H2: 18, Gas.H2: 90, Gas.C2H6: 162, Gas.CH4: 234, Gas.C2H24: 306}
+ANGLES_PER_GAS = {Gas.C2H2: 18, Gas.H2: 90, Gas.C2H6: 162, Gas.CH4: 234, Gas.C2H4: 306}
 
 
 @dataclass
@@ -329,14 +329,22 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
 
 if __name__ == "__main__":
     gases_percentages = [
-        GasPercentage(Gas.C2H2, 10),
-        GasPercentage(Gas.H2, 20),
-        GasPercentage(Gas.C2H6, 30),
-        GasPercentage(Gas.CH4, 40),
-        GasPercentage(Gas.C2H24, 50),
+        GasPercentage(Gas.C2H2, 0.0001),
+        GasPercentage(Gas.H2, 1458),
+        GasPercentage(Gas.C2H6, 1812),
+        GasPercentage(Gas.CH4, 9),
+        GasPercentage(Gas.C2H4, 0.0001),
     ]
 
-    centroid_coords = Coordinates(-1, -1)
+    gases_coords = []
+
+    for gas_percentage in gases_percentages:
+        coords = calculate_polygon_vertices_coords(gas_percentage.gas, gas_percentage.percentage)
+        gases_coords.append(coords)
+
+    area = calcuate_polygon_area(gases_coords)
+
+    centroid_coords = calculate_polygon_centroid_coords(gases_coords, area)
 
     centroid_positions_per_line = calculate_all_centroid_positions_per_line(
         centroid_coords
@@ -344,4 +352,4 @@ if __name__ == "__main__":
 
     pentagon_region = calculate_pentagon_region(centroid_coords, centroid_positions_per_line)
 
-    print(pentagon_region)
+    print(centroid_coords)
