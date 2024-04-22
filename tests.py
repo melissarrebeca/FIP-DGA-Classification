@@ -24,7 +24,7 @@ if __name__ == "__main__":
         "Centroid X",
         "Centroid Y",
         "Expected Region",
-        "Matchad Region",
+        "Matched Region",
     ]
 
     wrong_results = [header]
