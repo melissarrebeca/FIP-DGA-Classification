@@ -29,6 +29,8 @@ if __name__ == "__main__":
 
     wrong_results = [header]
 
+    right_results = [header]
+
     for i in range(1, 13):
         file_path = f"./data/dataset_{i}.csv"
 
@@ -74,8 +76,18 @@ if __name__ == "__main__":
                     wrong_results.append(
                         [h2_percentage, ch4_percentage, c2h6_percentage, c2h4_percentage, c2h2_percentage, centroid_coords.x, centroid_coords.y, right_pentagon_region, pentagon_region]
                     )
+                else:
+                    right_results.append(
+                        [h2_percentage, ch4_percentage, c2h6_percentage, c2h4_percentage, c2h2_percentage, centroid_coords.x, centroid_coords.y, right_pentagon_region, pentagon_region]
+                    )
+
+
 
 
         with open("wrong_results.csv", mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(wrong_results)
+
+        with open("right_results.csv", mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(right_results)
