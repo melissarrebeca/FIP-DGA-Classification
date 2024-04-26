@@ -174,6 +174,9 @@ class GasPercentage:
     percentage: float
 
 
+def calculate_relative_gas_percentage(gas_quantity: float, gases_quantity_sum: float):
+    return (gas_quantity / gases_quantity_sum) * 100
+
 def calculate_polygon_vertices_coords(gas: Gas, percentage: float) -> Coordinates:
     cos = math.cos(math.radians(ANGLES_PER_GAS[gas]))
     sen = math.sin(math.radians(ANGLES_PER_GAS[gas]))
@@ -243,7 +246,7 @@ def calculate_all_centroid_positions_per_line(centroid_coords: Coordinates):
         position = calculate_centroid_position_based_on_line(
             angular_coeficient,
             centroid_coords,
-            COORDS_PER_LINES[PentagonLines[pentagon_line.name]]["A"],
+            COORDS_PER_LINES[PentagonLines[pentagon_line.name]]["B"],
         )
 
         centroids_position_per_line[PentagonLines[pentagon_line.name]] = position
@@ -330,10 +333,10 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
 if __name__ == "__main__":
     gases_percentages = [
         GasPercentage(Gas.C2H2, 0.0001),
-        GasPercentage(Gas.H2, 1458),
-        GasPercentage(Gas.C2H6, 1812),
-        GasPercentage(Gas.CH4, 9),
-        GasPercentage(Gas.C2H4, 0.0001),
+        GasPercentage(Gas.H2, 0.0001),
+        GasPercentage(Gas.C2H6, 9),
+        GasPercentage(Gas.CH4, 0.0001),
+        GasPercentage(Gas.C2H4, 57),
     ]
 
     gases_coords = []
@@ -353,3 +356,5 @@ if __name__ == "__main__":
     pentagon_region = calculate_pentagon_region(centroid_coords, centroid_positions_per_line)
 
     print(centroid_coords)
+
+    print(pentagon_region)
