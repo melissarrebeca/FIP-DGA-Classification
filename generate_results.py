@@ -1,6 +1,17 @@
 import csv
 import os
-from main import GasPercentage, Gas, calcuate_polygon_area, calculate_all_centroid_positions_per_line, calculate_pentagon_region, calculate_polygon_centroid_coords, calculate_polygon_vertices_coords, PentagonRegions, calculate_relative_gas_percentage
+import shutil
+from main import (
+    GasPercentage,
+    Gas,
+    calcuate_polygon_area,
+    calculate_all_centroid_positions_per_line,
+    calculate_pentagon_region,
+    calculate_polygon_centroid_coords,
+    calculate_polygon_vertices_coords,
+    PentagonRegions,
+    calculate_relative_gas_percentage,
+)
 
 
 MAP_PENTAGON_REGIONS = {
@@ -16,6 +27,11 @@ MAP_PENTAGON_REGIONS = {
 if __name__ == "__main__":
 
     header = [
+        "H2 ppm",
+        "CH4 ppm",
+        "C2H6 ppm",
+        "C2H4 ppm",
+        "C2H2 ppm",
         "H2 percentage",
         "CH4 percentage",
         "C2H6 percentage",
@@ -49,6 +65,8 @@ if __name__ == "__main__":
                 c2h4_value = float(row[3])
                 c2h2_value = float(row[4])
 
+                print(c2h2_value)
+
                 sum = h2_value + ch4_value + c2h6_value + c2h4_value + c2h2_value
 
                 h2_percentage = calculate_relative_gas_percentage(h2_value, sum)
@@ -70,7 +88,9 @@ if __name__ == "__main__":
                 gases_coords = []
 
                 for gas_percentage in gases_percentages:
-                    coords = calculate_polygon_vertices_coords(gas_percentage.gas, gas_percentage.percentage)
+                    coords = calculate_polygon_vertices_coords(
+                        gas_percentage.gas, gas_percentage.percentage
+                    )
                     gases_coords.append(coords)
 
                 area = calcuate_polygon_area(gases_coords)
@@ -81,34 +101,83 @@ if __name__ == "__main__":
                     centroid_coords
                 )
 
-                pentagon_region = calculate_pentagon_region(centroid_coords, centroid_positions_per_line)
+                pentagon_region = calculate_pentagon_region(
+                    centroid_coords, centroid_positions_per_line
+                )
 
                 if pentagon_region == None:
                     not_discovered_results.append(
-                        [h2_percentage, ch4_percentage, c2h6_percentage, c2h4_percentage, c2h2_percentage, centroid_coords.x, centroid_coords.y, right_pentagon_region, "Not Discovered"]
+                        [
+                            h2_value,
+                            ch4_value,
+                            c2h6_value,
+                            c2h4_value,
+                            c2h2_value,
+                            h2_percentage,
+                            ch4_percentage,
+                            c2h6_percentage,
+                            c2h4_percentage,
+                            c2h2_percentage,
+                            centroid_coords.x,
+                            centroid_coords.y,
+                            right_pentagon_region,
+                            "Not Discovered",
+                        ]
                     )
 
                 elif pentagon_region != right_pentagon_region:
                     wrong_match_results.append(
-                        [h2_percentage, ch4_percentage, c2h6_percentage, c2h4_percentage, c2h2_percentage, centroid_coords.x, centroid_coords.y, right_pentagon_region, pentagon_region]
+                        [
+                            h2_value,
+                            ch4_value,
+                            c2h6_value,
+                            c2h4_value,
+                            c2h2_value,
+                            h2_percentage,
+                            ch4_percentage,
+                            c2h6_percentage,
+                            c2h4_percentage,
+                            c2h2_percentage,
+                            centroid_coords.x,
+                            centroid_coords.y,
+                            right_pentagon_region,
+                            pentagon_region,
+                        ]
                     )
                 else:
                     right_results.append(
-                        [h2_percentage, ch4_percentage, c2h6_percentage, c2h4_percentage, c2h2_percentage, centroid_coords.x, centroid_coords.y, right_pentagon_region, pentagon_region]
+                        [
+                            h2_value,
+                            ch4_value,
+                            c2h6_value,
+                            c2h4_value,
+                            c2h2_value,
+                            h2_percentage,
+                            ch4_percentage,
+                            c2h6_percentage,
+                            c2h4_percentage,
+                            c2h2_percentage,
+                            centroid_coords.x,
+                            centroid_coords.y,
+                            right_pentagon_region,
+                            pentagon_region,
+                        ]
                     )
 
             dir_path = f"./results/dataset_{i}"
 
+
+            shutil.rmtree(dir_path)
             os.mkdir(dir_path)
 
-            with open(f"{dir_path}/not_discovered.csv", mode='w', newline='') as file:
+            with open(f"{dir_path}/not_discovered.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerows(not_discovered_results)
 
-            with open(f"{dir_path}/right.csv", mode='w', newline='') as file:
+            with open(f"{dir_path}/right.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerows(right_results)
 
-            with open(f"{dir_path}/wrong_match.csv", mode='w', newline='') as file:
+            with open(f"{dir_path}/wrong_match.csv", mode="w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerows(wrong_match_results)
