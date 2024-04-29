@@ -332,11 +332,11 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
 
 if __name__ == "__main__":
     gases_percentages = [
-        GasPercentage(Gas.C2H2, 0.0001),
-        GasPercentage(Gas.H2, 0.0001),
-        GasPercentage(Gas.C2H6, 9),
-        GasPercentage(Gas.CH4, 0.0001),
-        GasPercentage(Gas.C2H4, 57),
+        GasPercentage(Gas.H2, 100),
+        GasPercentage(Gas.C2H2, 0),
+        GasPercentage(Gas.C2H4, 0),
+        GasPercentage(Gas.CH4, 0),
+        GasPercentage(Gas.C2H6, 0),
     ]
 
     gases_coords = []
