@@ -331,12 +331,27 @@ def calculate_pentagon_region(centroid_coords: Coordinates, position_per_line: d
     return None
 
 if __name__ == "__main__":
+
+    h2_value = 79.1
+    ch4_value = 261.2
+    c2h6_value = 26.1
+    c2h4_value = 125.8
+    c2h2_value = 75
+
+    sum = h2_value + ch4_value + c2h6_value + c2h4_value + c2h2_value
+
+    h2_percentage = calculate_relative_gas_percentage(h2_value, sum) or 0.0000001
+    ch4_percentage = calculate_relative_gas_percentage(ch4_value, sum) or 0.0000001
+    c2h6_percentage = calculate_relative_gas_percentage(c2h6_value, sum) or 0.0000001
+    c2h4_percentage = calculate_relative_gas_percentage(c2h4_value, sum) or 0.0000001
+    c2h2_percentage = calculate_relative_gas_percentage(c2h2_value, sum) or 0.0000001
+
     gases_percentages = [
-        GasPercentage(Gas.H2, 100),
-        GasPercentage(Gas.C2H2, 0),
-        GasPercentage(Gas.C2H4, 0),
-        GasPercentage(Gas.CH4, 0),
-        GasPercentage(Gas.C2H6, 0),
+        GasPercentage(Gas.H2, h2_percentage),
+        GasPercentage(Gas.C2H2, c2h2_percentage),
+        GasPercentage(Gas.C2H4, c2h4_percentage),
+        GasPercentage(Gas.CH4, ch4_percentage),
+        GasPercentage(Gas.C2H6, c2h6_percentage),
     ]
 
     gases_coords = []
@@ -349,12 +364,12 @@ if __name__ == "__main__":
 
     centroid_coords = calculate_polygon_centroid_coords(gases_coords, area)
 
+    print(centroid_coords)
+
     centroid_positions_per_line = calculate_all_centroid_positions_per_line(
         centroid_coords
     )
 
     pentagon_region = calculate_pentagon_region(centroid_coords, centroid_positions_per_line)
-
-    print(centroid_coords)
 
     print(pentagon_region)

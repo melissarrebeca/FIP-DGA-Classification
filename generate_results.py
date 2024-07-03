@@ -43,7 +43,7 @@ if __name__ == "__main__":
         "Matched Region",
     ]
 
-    for i in range(1, 15):
+    for i in range(1, 17):
 
         wrong_match_results = [header]
 
@@ -65,8 +65,6 @@ if __name__ == "__main__":
                 c2h4_value = float(row[3])
                 c2h2_value = float(row[4])
 
-                print(c2h2_value)
-
                 sum = h2_value + ch4_value + c2h6_value + c2h4_value + c2h2_value
 
                 h2_percentage = calculate_relative_gas_percentage(h2_value, sum)
@@ -75,7 +73,7 @@ if __name__ == "__main__":
                 c2h4_percentage = calculate_relative_gas_percentage(c2h4_value, sum)
                 c2h2_percentage = calculate_relative_gas_percentage(c2h2_value, sum)
 
-                right_pentagon_region = MAP_PENTAGON_REGIONS[int(row[5])]
+                right_pentagon_region = MAP_PENTAGON_REGIONS[int(float(row[5]))]
 
                 gases_percentages = [
                     GasPercentage(Gas.C2H2, c2h2_percentage),
