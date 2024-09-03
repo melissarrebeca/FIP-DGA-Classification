@@ -43,7 +43,7 @@ if __name__ == "__main__":
         "Matched Region",
     ]
 
-    for i in range(1, 17):
+    for i in range(16, 18):
 
         wrong_match_results = [header]
 
@@ -57,6 +57,8 @@ if __name__ == "__main__":
             csv_reader = csv.reader(file)
 
             next(csv_reader)
+
+            count = 0
 
             for row in csv_reader:
                 h2_value = float(row[0])

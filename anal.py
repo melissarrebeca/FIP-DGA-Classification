@@ -1,58 +1,60 @@
 import csv
 
-from main import PentagonRegions
+from generate_results import MAP_PENTAGON_REGIONS
+
 
 
 if __name__ == "__main__":
 
-    right_under_40 = 0
-    right_above_40 = 0
+    r_regions = {
+        "PentagonRegions.PD": {
+            "right": 0,
+            "wrong": 0
+        },
+        "PentagonRegions.T1":{            "right": 0,
+            "wrong": 0},
+        "PentagonRegions.T2": {            "right": 0,
+            "wrong": 0},
+        "PentagonRegions.T3": {            "right": 0,
+            "wrong": 0},
+        "PentagonRegions.D1": {            "right": 0,
+            "wrong": 0},
+        "PentagonRegions.D2": {            "right": 0,
+            "wrong": 0},
 
-    wrongs_under_40 = 0
-    wrongs_above_40 = 0
+        "PentagonRegions.S": {
+            "right": 0,
+            "wrong": 0
+        }
+    }
 
-    for i in range(1, 15):
-        file_path = f"./results/dataset_{i}/right.csv"
-        with open(file_path, "r") as file:
+    for i in range(17, 18):
+
+        # with open(f"./results/dataset_{i}/right.csv", "r") as file:
+        #     csv_reader = csv.reader(file)
+
+        #     next(csv_reader)
+
+
+        #     for row in csv_reader:
+        #         region = row[12]
+
+        #         r_regions[region]["right"] += 1
+
+        
+        with open(f"./results/dataset_{i}/wrong_match.csv", "r") as file:
             csv_reader = csv.reader(file)
 
             next(csv_reader)
 
-            for row in csv_reader:
-
-                h2_percentage = float(row[5])
-                ch4_percentage = float(row[6])
-                c2h6_percentage = float(row[7])
-                c2h4_percentage = float(row[8])
-                c2h2_percentage = float(row[9])
-
-                if h2_percentage > 40 or ch4_percentage > 40 or c2h6_percentage > 40 or c2h4_percentage > 40 or c2h2_percentage > 40:
-                    right_above_40 += 1
-                else:
-                    right_under_40 += 1
-
-        file_path = f"./results/dataset_{i}/wrong_match.csv"
-        with open(file_path, "r") as file:
-            csv_reader = csv.reader(file)
-
-            next(csv_reader)
 
             for row in csv_reader:
+                region = row[12]
 
-                h2_percentage = float(row[5])
-                ch4_percentage = float(row[6])
-                c2h6_percentage = float(row[7])
-                c2h4_percentage = float(row[8])
-                c2h2_percentage = float(row[9])
+                r_regions[region]["wrong"] += 1
 
-                if h2_percentage > 40 or ch4_percentage > 40 or c2h6_percentage > 40 or c2h4_percentage > 40 or c2h2_percentage > 40:
-                    wrongs_above_40 += 1
-                else:
-                    wrongs_under_40 += 1
+
+    print(r_regions)
 
 
 
-    print(f"Rights above 40: {right_above_40}")
-    print(f"Rights under 40: {right_under_40}")
-    print(f"Wrongs above 40: {wrongs_above_40}")
-    print(f"Wrongs under 40: {wrongs_under_40}")

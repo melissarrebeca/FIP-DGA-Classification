@@ -20,7 +20,7 @@ if __name__ == "__main__":
     not_near_regions_dict = {}
 
 
-    for i in range(16, 17):
+    for i in range(17, 18):
         file_path = f"./results/dataset_{i}/wrong_match.csv"
         with open(file_path, "r") as file:
             csv_reader = csv.reader(file)
